@@ -45,7 +45,7 @@ BEGIN
     documents.metadata,
     1 - (documents.embedding <=> query_embedding) AS similarity
   FROM documents
-  WHERE documents.metadata @> COALESCE(filter, '{}')  -- Handle NULL filters
+  WHERE documents.metadata @> COALESCE(filter, '{}')
   ORDER BY documents.embedding <=> query_embedding
   LIMIT match_count;
 END;

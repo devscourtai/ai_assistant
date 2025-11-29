@@ -145,7 +145,81 @@ TOKENIZERS_PARALLELISM=false
 2. Enable the `pgvector` extension in your database:
    - Go to Database → Extensions
    - Search for "vector" and enable it
-3. The backend will automatically create the necessary tables on first run
+3. **Run the SQL setup script** in Supabase SQL Editor:
+   - In your Supabase dashboard, go to **SQL Editor**
+   - Click **New Query**
+   - Copy and paste the following SQL script:
+
+```sql
+-- ============================================================================
+-- Fix Vector Dimensions for HuggingFace Embeddings (384 dimensions)
+-- ============================================================================
+-- This script sets up the database to work with HuggingFace embeddings
+-- which use 384 dimensions (all-MiniLM-L6-v2 model)
+-- ============================================================================
+
+-- Step 1: Drop existing function
+DROP FUNCTION IF EXISTS match_documents(vector(1536), int, jsonb);
+DROP FUNCTION IF EXISTS match_documents(vector(384), int, jsonb);
+
+-- Step 2: Drop and recreate the documents table with 384 dimensions
+DROP TABLE IF EXISTS documents CASCADE;
+
+CREATE TABLE documents (
+  id uuid PRIMARY KEY DEFAULT gen_random_uuid(),  -- Unique identifier
+  content text NOT NULL,                          -- Document text content
+  metadata jsonb,                                 -- Document metadata (filename, chunk info, etc.)
+  embedding vector(384) NOT NULL                  -- 384-dimensional embedding vector
+);
+
+-- Step 3: Create index for fast similarity search
+CREATE INDEX ON documents USING ivfflat (embedding vector_cosine_ops)
+WITH (lists = 100);
+
+-- Step 4: Create the similarity search function with 384 dimensions
+CREATE OR REPLACE FUNCTION match_documents(
+  query_embedding vector(384),  -- Query vector (384 dimensions)
+  match_count int DEFAULT 5,    -- Number of matches to return
+  filter jsonb DEFAULT '{}'     -- Optional metadata filter
+)
+RETURNS TABLE (
+  id uuid,
+  content text,
+  metadata jsonb,
+  similarity float
+)
+LANGUAGE plpgsql
+AS $$
+BEGIN
+  RETURN QUERY
+  SELECT
+    documents.id,
+    documents.content,
+    documents.metadata,
+    1 - (documents.embedding <=> query_embedding) AS similarity
+  FROM documents
+  WHERE documents.metadata @> COALESCE(filter, '{}')
+  ORDER BY documents.embedding <=> query_embedding
+  LIMIT match_count;
+END;
+$$;
+
+-- ============================================================================
+-- Done! Your database now accepts 384-dimensional vectors
+-- ============================================================================
+```
+
+4. Click **Run** to execute the SQL script
+
+**What this SQL script does:**
+
+- **Creates the documents table**: Stores your document chunks with 384-dimensional embeddings (compatible with HuggingFace models)
+- **Sets up vector indexing**: Creates an IVFFlat index for fast similarity search using cosine distance
+- **Defines the match_documents function**: Enables semantic search to find relevant document chunks based on query embeddings
+- **Configures for HuggingFace**: Uses 384 dimensions instead of OpenAI's 1536 dimensions
+
+**Why 384 dimensions?**
+This project uses the HuggingFace `all-MiniLM-L6-v2` embedding model, which generates 384-dimensional vectors. This is more efficient and cost-effective than OpenAI embeddings while maintaining good quality for document search.
 
 ### 3. Frontend Setup
 
