@@ -1,0 +1,296 @@
+/**
+ * Global Styles for AI Document Assistant
+ * Enterprise-Grade Design System
+ *
+ * This file contains:
+ * 1. Tailwind CSS imports
+ * 2. CSS custom properties (variables) for theming
+ * 3. Global styles and animations for modern SaaS UI
+ */
+
+/* Import Tailwind CSS base, components, and utilities */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/*
+ * CSS Custom Properties (Variables)
+ * Modern enterprise color scheme with brand color: hsl(218 89% 51%)
+ * Using HSL format for easy manipulation and consistency
+ */
+@layer base {
+  :root {
+    /* Background colors - Soft gradient foundation */
+    --background: 0 0% 100%;           /* Pure white */
+    --foreground: 222.2 47% 11%;       /* Deep slate text */
+
+    /* Card styles - Elevated surfaces */
+    --card: 0 0% 100%;                 /* White cards */
+    --card-foreground: 222.2 47% 11%;  /* Dark text on cards */
+
+    /* Popover styles */
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 47% 11%;
+
+    /* Primary brand color - Deep blue */
+    --primary: 218 89% 35%;            /* Deep blue */
+    --primary-foreground: 0 0% 100%;   /* White text on brand */
+
+    /* Primary hover state */
+    --primary-hover: 218 89% 30%;      /* Even darker deep blue */
+
+    /* Primary light variant */
+    --primary-light: 218 89% 45%;      /* Lighter deep blue for accents */
+
+    /* Secondary styles - Subtle gray */
+    --secondary: 220 14% 96%;          /* Light gray */
+    --secondary-foreground: 222.2 47% 11%; /* Dark text */
+
+    /* Muted/subtle styles - Background elements */
+    --muted: 220 13% 95%;              /* Very light gray */
+    --muted-foreground: 220 9% 46%;    /* Medium gray text */
+
+    /* Accent colors - Highlight elements */
+    --accent: 218 89% 97%;             /* Very light blue */
+    --accent-foreground: 218 89% 35%;  /* Deep blue text */
+
+    /* Success colors */
+    --success: 142 71% 45%;            /* Green */
+    --success-foreground: 0 0% 100%;   /* White text on success */
+
+    /* Warning colors */
+    --warning: 38 92% 50%;             /* Amber */
+    --warning-foreground: 0 0% 100%;   /* White text on warning */
+
+    /* Destructive/error colors */
+    --destructive: 0 84% 60%;          /* Red for errors */
+    --destructive-foreground: 0 0% 100%; /* White text on red */
+
+    /* Border and input styles - Subtle boundaries */
+    --border: 220 13% 91%;             /* Light border */
+    --input: 220 13% 91%;              /* Input border */
+    --ring: 218 89% 51%;               /* Focus ring - brand color */
+
+    /* Border radius - Modern rounded corners */
+    --radius: 0.75rem;                 /* 12px rounded corners */
+    --radius-sm: 0.5rem;               /* 8px for small elements */
+    --radius-lg: 1rem;                 /* 16px for large elements */
+
+    /* Shadows - Subtle elevation */
+    --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+    --shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+    --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+    --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+    --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+  }
+
+  /* Dark mode color scheme (optional) */
+  .dark {
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
+
+    --card: 222.2 84% 4.9%;
+    --card-foreground: 210 40% 98%;
+
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
+
+    --primary: 210 40% 98%;
+    --primary-foreground: 222.2 47.4% 11.2%;
+
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+
+    --accent: 217.2 32.6% 17.5%;
+    --accent-foreground: 210 40% 98%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 212.7 26.8% 83.9%;
+  }
+}
+
+/*
+ * Base element styles - Modern typography and foundations
+ */
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+    /* Premium font rendering */
+    font-feature-settings: "rlig" 1, "calt" 1;
+    font-synthesis: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* Heading styles - Clear hierarchy */
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-semibold tracking-tight;
+  }
+
+  h1 {
+    @apply text-4xl lg:text-5xl;
+  }
+
+  h2 {
+    @apply text-3xl lg:text-4xl;
+  }
+
+  h3 {
+    @apply text-2xl lg:text-3xl;
+  }
+}
+
+/*
+ * Custom utility classes - Enterprise-grade components
+ * Reusable patterns for consistent modern design
+ */
+@layer utilities {
+  /* Glass-morphism effect - Premium blur */
+  .glass-effect {
+    @apply bg-white/90 backdrop-blur-xl border border-white/20 shadow-lg;
+  }
+
+  /* Gradient backgrounds - Subtle and sophisticated */
+  .gradient-bg {
+    background: linear-gradient(135deg, hsl(220, 13%, 99%) 0%, hsl(220, 13%, 97%) 100%);
+  }
+
+  .gradient-bg-alt {
+    background: linear-gradient(135deg, hsl(218, 89%, 98%) 0%, hsl(218, 89%, 95%) 100%);
+  }
+
+  /* Shadow utilities - Layered elevation system */
+  .shadow-soft {
+    box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.05), 0 1px 2px -1px rgb(0 0 0 / 0.05);
+  }
+
+  .shadow-medium {
+    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.07), 0 2px 4px -2px rgb(0 0 0 / 0.07);
+  }
+
+  .shadow-large {
+    box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.08), 0 4px 6px -4px rgb(0 0 0 / 0.08);
+  }
+
+  .shadow-enterprise {
+    box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.08), 0 8px 10px -6px rgb(0 0 0 / 0.08);
+  }
+
+  /* Smooth transitions - Performance optimized */
+  .transition-smooth {
+    @apply transition-all duration-200 ease-out;
+  }
+
+  .transition-slow {
+    @apply transition-all duration-300 ease-in-out;
+  }
+
+  /* Card hover effects - Interactive feedback */
+  .card-hover {
+    @apply transition-all duration-200 hover:shadow-large hover:-translate-y-0.5;
+  }
+
+  /* Border gradients - Subtle accents */
+  .border-gradient {
+    border: 1px solid transparent;
+    background: linear-gradient(white, white) padding-box,
+                linear-gradient(135deg, hsl(220, 13%, 91%), hsl(218, 89%, 91%)) border-box;
+  }
+
+  /* Focus rings - Accessible and beautiful */
+  .focus-ring {
+    @apply focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-background;
+  }
+
+  /* Smooth scale hover */
+  .hover-scale {
+    @apply transition-transform duration-200 hover:scale-[1.02] active:scale-[0.98];
+  }
+
+  /* Pulse animation for loading states */
+  .pulse-subtle {
+    animation: pulse-subtle 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+
+  @keyframes pulse-subtle {
+    0%, 100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.8;
+    }
+  }
+
+  /* Fade in animation */
+  .fade-in {
+    animation: fade-in 0.3s ease-out;
+  }
+
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+      transform: translateY(4px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* Slide in from right */
+  .slide-in-right {
+    animation: slide-in-right 0.3s ease-out;
+  }
+
+  @keyframes slide-in-right {
+    from {
+      opacity: 0;
+      transform: translateX(16px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+}
+
+/*
+ * Custom scrollbar styling - Minimal and elegant
+ */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-muted/30;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-muted-foreground/20 rounded-full;
+  transition: background-color 0.2s;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-muted-foreground/30;
+}
+
+/*
+ * Selection styling - Brand color highlight
+ */
+::selection {
+  background: hsl(218, 89%, 51%, 0.2);
+  color: hsl(222.2, 47%, 11%);
+}
